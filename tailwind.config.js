@@ -4,5 +4,8 @@ export default {
   theme: {
     extend: {},
   },
+  variants: {
+    borderColor: ["focus-within"],
+  },
   plugins: [],
 };
