@@ -10,13 +10,13 @@ const RepoItem = ({ data }) => {
     <a
       href={data?.html_url}
       target="_blank"
-      className="p-6 space-y-4 flex flex-col justify-between bg-gradient-to-r from-[#111729] to-[#1D1B48] text-[#CDD5E0] rounded-lg"
+      className="p-4 lg:p-6 space-y-4 flex flex-col justify-between bg-gradient-to-r from-[#111729] to-[#1D1B48] text-[#CDD5E0] rounded-lg"
     >
       <div className="space-y-2">
-        <h4 className="text-lg font-semibold">{data?.name}</h4>
-        <p className="text-sm">{data?.description}</p>
+        <h4 className="lg:text-lg font-semibold">{data?.name}</h4>
+        <p className="text-xs lg:text-sm">{data?.description}</p>
       </div>
-      <div className="text-sm flex items-center gap-4">
+      <div className="text-xs lg:text-sm flex items-center gap-4">
         {data?.license ? (
           <div className="flex items-center gap-1">
             <img src={Chield} alt="chield-icon" />
