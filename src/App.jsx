@@ -110,7 +110,7 @@ const App = () => {
       <div
         className={`relative ${
           isEmptyObject(selectedData) ? "invisible" : "visible"
-        } -mt-16 max-w-screen-lg mx-auto z-20`}
+        } -mt-16 max-w-screen-lg mx-auto space-y-6 z-20`}
       >
         <div className="flex items-end gap-12">
           <div className="w-fit p-2 bg-[#364153] rounded-lg">
@@ -125,6 +125,14 @@ const App = () => {
               return <DetailItem data={item} key={index} />;
             })}
           </div>
+        </div>
+
+        {/* Name */}
+        <div className="space-y-1">
+          <h1 className="text-[32px] text-[#CDD5E0] font-semibold">
+            {selectedData?.name ?? "No Name"}
+          </h1>
+          <p className="text-[#CDD5E0]">{selectedData?.bio ?? "No Bio"}</p>
         </div>
       </div>
     </div>
