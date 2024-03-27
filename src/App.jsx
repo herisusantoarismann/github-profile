@@ -102,7 +102,7 @@ const App = () => {
         <img
           src={BgImage}
           alt="background-image"
-          className="absolute top-0 left-0 h-full object-cover lg:object-fit"
+          className="absolute top-0 left-0 h-full w-full object-cover lg:object-fit"
         />
 
         <div className="w-3/4 lg:w-1/3 space-y-4 z-10">
