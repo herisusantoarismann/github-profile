@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import BgImage from "./assets/hero-image-github-profile.png";
 import SearchICon from "./assets/Search.svg";
-import axios from "axios";
-import { DetailItem } from "./components";
+
+import { DetailItem, RepoItem } from "./components";
 
 const App = () => {
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState();
+  const [repos, setRepos] = useState([]);
   const [detail, setDetail] = useState([]);
 
   const onChange = async (e) => {
@@ -35,16 +37,6 @@ const App = () => {
     setData(data);
   };
 
-  const isEmptyObject = (obj) => {
-    for (const prop in obj) {
-      if (Object.hasOwn(obj, prop)) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
   const selectData = (value) => {
     setSelectedData(value);
     setDetail(() => {
@@ -64,6 +56,44 @@ const App = () => {
       ];
     });
   };
+
+  const isEmptyObject = (obj) => {
+    for (const prop in obj) {
+      if (Object.hasOwn(obj, prop)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  useEffect(() => {
+    const getRepos = async (username) => {
+      if (!username) {
+        setRepos([]);
+
+        return;
+      }
+
+      const res = await axios(
+        `https://api.github.com/users/${username}/repos`,
+        {
+          headers: {
+            Authorization: `token ${process.env.PERSONAL_TOKEN}`,
+          },
+        }
+      ).catch(() => {
+        setData({});
+
+        return;
+      });
+      const data = res?.data ?? {};
+
+      setRepos(data);
+    };
+
+    getRepos(selectedData?.login);
+  }, [selectedData]);
 
   return (
     <div className="min-h-screen min-w-screen bg-[#364153]">
@@ -110,7 +140,7 @@ const App = () => {
       <div
         className={`relative ${
           isEmptyObject(selectedData) ? "invisible" : "visible"
-        } -mt-16 max-w-screen-lg mx-auto space-y-6 z-20`}
+        } -mt-20 max-w-screen-lg mx-auto space-y-6 py-6 z-20`}
       >
         <div className="flex items-end gap-12">
           <div className="w-fit p-2 bg-[#364153] rounded-lg">
@@ -134,6 +164,25 @@ const App = () => {
           </h1>
           <p className="text-[#CDD5E0]">{selectedData?.bio ?? "No Bio"}</p>
         </div>
+
+        {/* Repos */}
+        <div className="!pt-12 !pb-6 grid grid-cols-2 gap-8">
+          {repos.slice(0, 4).map((item, index) => {
+            return <RepoItem data={item} key={index} />;
+          })}
+        </div>
+
+        {repos.length > 4 ? (
+          <a
+            href={`https://github.com/${selectedData?.login}?tab=repositories`}
+            target="_blank"
+            className="flex justify-center text-sm text-[#CDD5E0] hover:text-[#CDD5E0]/75 hover:underline"
+          >
+            View all repositories
+          </a>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
