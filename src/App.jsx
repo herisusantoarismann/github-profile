@@ -3,15 +3,20 @@ import React, { useState } from "react";
 import BgImage from "./assets/hero-image-github-profile.png";
 import SearchICon from "./assets/Search.svg";
 import axios from "axios";
+import { DetailItem } from "./components";
 
 const App = () => {
   const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState();
+  const [detail, setDetail] = useState([]);
 
   const onChange = async (e) => {
     const username = e.target.value ?? "";
 
     if (!username) {
       setData({});
+      setSelectedData({});
+      setDetail([]);
 
       return;
     }
@@ -40,9 +45,29 @@ const App = () => {
     return true;
   };
 
+  const selectData = (value) => {
+    setSelectedData(value);
+    setDetail(() => {
+      return [
+        {
+          label: "Followers",
+          value: value?.followers,
+        },
+        {
+          label: "Following",
+          value: value?.following,
+        },
+        {
+          label: "Location",
+          value: value?.location ?? "No Location",
+        },
+      ];
+    });
+  };
+
   return (
-    <div className="min-h-screen min-w-screen">
-      <div className="relative flex items-center justify-center gap-2 p-12 overflow-hidden">
+    <div className="min-h-screen min-w-screen bg-[#364153]">
+      <div className="relative flex items-center justify-center gap-2 py-12 pb-32 overflow-hidden">
         <img
           src={BgImage}
           alt="background-image"
@@ -55,7 +80,7 @@ const App = () => {
             <input
               type="text"
               placeholder="username"
-              className="outline-none border-none bg-transparent text-white placeholder:text-[#4A5567]"
+              className="outline-none border-none bg-transparent text-[#CDD5E0] placeholder:text-[#4A5567]"
               onChange={(e) => onChange(e)}
             />
           </div>
@@ -63,7 +88,8 @@ const App = () => {
           <div
             className={`${
               isEmptyObject(data) ? "invisible" : "visible"
-            } w-full h-full p-2 flex items-center gap-3 rounded-lg bg-[#20293A]`}
+            } group w-full h-full p-2 flex items-center gap-3 rounded-lg bg-[#20293A] cursor-pointer`}
+            onClick={() => selectData(data)}
           >
             <img
               src={data?.avatar_url}
@@ -71,9 +97,33 @@ const App = () => {
               className="size-20 object-cover rounded-lg"
             />
             <div className="flex flex-col justify-between gap-2">
-              <p className="font-semibold text-white">{data?.name}</p>
+              <p className="font-semibold text-[#CDD5E0] group-hover:text-[#CDD5E0]/75">
+                {data?.name ?? "No Name"}
+              </p>
               <p className="text-sm text-[#4A5567]">{data?.bio ?? "No Bio"}</p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Details */}
+      <div
+        className={`relative ${
+          isEmptyObject(selectedData) ? "invisible" : "visible"
+        } -mt-16 max-w-screen-lg mx-auto z-20`}
+      >
+        <div className="flex items-end gap-12">
+          <div className="w-fit p-2 bg-[#364153] rounded-lg">
+            <img
+              src={selectedData?.avatar_url}
+              alt="avatar"
+              className="size-32 rounded-lg object-cover"
+            />
+          </div>
+          <div className="flex-1 pb-2 flex items-center gap-6">
+            {detail.map((item, index) => {
+              return <DetailItem data={item} key={index} />;
+            })}
           </div>
         </div>
       </div>
