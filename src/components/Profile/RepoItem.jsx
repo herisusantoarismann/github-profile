@@ -10,7 +10,9 @@ const RepoItem = ({ data }) => {
       className="p-4 lg:p-6 space-y-4 flex flex-col justify-between bg-gradient-to-r from-[#111729] to-[#1D1B48] text-[#CDD5E0] rounded-lg"
     >
       <div className="space-y-2">
-        <h4 className="lg:text-lg font-semibold">{data?.name}</h4>
+        <h4 data-testid="repoItem-name" className="lg:text-lg font-semibold">
+          {data?.name}
+        </h4>
         <p className="text-xs lg:text-sm">{data?.description}</p>
       </div>
       <div className="text-xs lg:text-sm flex items-center gap-4">

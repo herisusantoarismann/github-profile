@@ -3,6 +3,8 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
   transform: {
     "^.+\\.(js|jsx)$": "babel-jest",
+    "^.+\\.svg$": "jest-transform-stub",
+    "^.+\\.(jpg|jpeg|png|gif|webp|avif|bmp|tiff)$": "jest-transform-stub",
   },
   testEnvironment: "jsdom",
   transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$", "\\.svg$"],
