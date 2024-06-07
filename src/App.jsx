@@ -5,6 +5,7 @@ import BgImage from "./assets/hero-image-github-profile.png";
 import SearchICon from "./assets/Search.svg";
 
 import { DetailItem, RepoItem } from "./components";
+import { debounce } from "lodash";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -23,19 +24,24 @@ const App = () => {
       return;
     }
 
-    const res = await axios(`https://api.github.com/users/${username}`, {
-      headers: {
-        Authorization: `token ${process.env.PERSONAL_TOKEN}`,
-      },
-    }).catch(() => {
+    try {
+      const res = await axios(`https://api.github.com/users/${username}`, {
+        headers: {
+          Authorization: `token ${process.env.PERSONAL_TOKEN}`,
+        },
+      });
+
+      const data = res?.data ?? {};
+    } catch (err) {
       setData({});
 
       return;
-    });
-    const data = res?.data ?? {};
+    }
 
     setData(data);
   };
+
+  const debouncedOnChange = debounce(onChange, 500);
 
   const selectData = (value) => {
     setData({});
@@ -107,12 +113,27 @@ const App = () => {
 
         <div className="w-3/4 lg:w-1/3 space-y-4 z-10">
           <div className="w-full p-2 lg:p-4 flex items-center gap-3 bg-[#20293A] rounded-lg border border-transparent focus-within:border-[#3662E3]">
-            <img src={SearchICon} alt="search-icon" />
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="11" cy="11" r="7" stroke="#97A3B6" strokeWidth="2" />
+              <path
+                d="M20 20L17 17"
+                stroke="#97A3B6"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
+
             <input
               type="text"
               placeholder="username"
               className="outline-none border-none bg-transparent text-[#CDD5E0] placeholder:text-[#4A5567]"
-              onChange={(e) => onChange(e)}
+              onChange={(e) => debouncedOnChange(e)}
             />
           </div>
 
@@ -128,10 +149,16 @@ const App = () => {
               className="size-12 lg:size-20 object-cover rounded-lg"
             />
             <div className="flex flex-col justify-between gap-2">
-              <p className="text-sm lg:text-base font-semibold text-[#CDD5E0] group-hover:text-[#CDD5E0]/75">
+              <p
+                data-testid="app-github-search-name"
+                className="text-sm lg:text-base font-semibold text-[#CDD5E0] group-hover:text-[#CDD5E0]/75"
+              >
                 {data?.name ?? "No Name"}
               </p>
-              <p className="text-xs lg:text-sm text-[#4A5567]">
+              <p
+                data-testid="app-github-search-bio"
+                className="text-xs lg:text-sm text-[#4A5567]"
+              >
                 {data?.bio ?? "No Bio"}
               </p>
             </div>
@@ -162,10 +189,16 @@ const App = () => {
 
         {/* Name */}
         <div className="space-y-1">
-          <h1 className="text-lg lg:text-[32px] text-[#CDD5E0] font-semibold">
+          <h1
+            data-testid="app-github-name"
+            className="text-lg lg:text-[32px] text-[#CDD5E0] font-semibold"
+          >
             {selectedData?.name ?? "No Name"}
           </h1>
-          <p className="text-xs lg:text-base text-[#CDD5E0]">
+          <p
+            data-testid="app-github-bio"
+            className="text-xs lg:text-base text-[#CDD5E0]"
+          >
             {selectedData?.bio ?? "No Bio"}
           </p>
         </div>
