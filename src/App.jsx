@@ -5,6 +5,7 @@ import BgImage from "./assets/hero-image-github-profile.png";
 import SearchICon from "./assets/Search.svg";
 
 import { DetailItem, RepoItem } from "./components";
+import { debounce } from "lodash";
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -36,6 +37,8 @@ const App = () => {
 
     setData(data);
   };
+
+  const debouncedOnChange = debounce(onChange, 500);
 
   const selectData = (value) => {
     setData({});
@@ -112,7 +115,7 @@ const App = () => {
               type="text"
               placeholder="username"
               className="outline-none border-none bg-transparent text-[#CDD5E0] placeholder:text-[#4A5567]"
-              onChange={(e) => onChange(e)}
+              onChange={(e) => debouncedOnChange(e)}
             />
           </div>
 
