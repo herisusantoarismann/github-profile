@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
   return {
     define: {
       "process.env.PERSONAL_TOKEN": JSON.stringify(env.PERSONAL_TOKEN),
+      "process.env.HOTJAR_ID": JSON.stringify(env.HOTJAR_ID),
     },
     plugins: [react()],
   };
