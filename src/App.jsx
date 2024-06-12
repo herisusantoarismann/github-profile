@@ -32,13 +32,13 @@ const App = () => {
       });
 
       const data = res?.data ?? {};
+
+      setData(data);
     } catch (err) {
       setData({});
 
       return;
     }
-
-    setData(data);
   };
 
   const debouncedOnChange = debounce(onChange, 500);
