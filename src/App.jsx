@@ -2,12 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import BgImage from "./assets/hero-image-github-profile.png";
-import SearchICon from "./assets/Search.svg";
 
 import { DetailItem, RepoItem } from "./components";
 import { debounce } from "lodash";
+import ReactGA from "react-ga4";
 
 const App = () => {
+  ReactGA.send({
+    hintType: "pageView",
+    page: "/",
+    title: "Home",
+  });
+
   const [data, setData] = useState([]);
   const [selectedData, setSelectedData] = useState();
   const [repos, setRepos] = useState([]);
@@ -44,6 +50,10 @@ const App = () => {
   const debouncedOnChange = debounce(onChange, 500);
 
   const selectData = (value) => {
+    ReactGA.send({
+      hintType: "view_detail_user",
+    });
+
     setData({});
     setSelectedData(value);
     setDetail(() => {

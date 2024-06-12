@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import ReactGA from "react-ga4";
 
 const Hotjar = ({ children }) => {
   useEffect(() => {
@@ -20,6 +21,8 @@ const Hotjar = ({ children }) => {
 };
 
 const Support = ({ children }) => {
+  ReactGA.initialize(process.env.GA_TRACKING_ID);
+
   return process.env.HOTJAR_ID ? <Hotjar>{children}</Hotjar> : <>{children}</>;
 };
 
