@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
     define: {
       "process.env.PERSONAL_TOKEN": JSON.stringify(env.PERSONAL_TOKEN),
       "process.env.HOTJAR_ID": JSON.stringify(env.HOTJAR_ID),
+      "process.env.GA_TRACKING_ID": JSON.stringify(env.GA_TRACKING_ID),
     },
     plugins: [react()],
   };
